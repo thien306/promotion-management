@@ -2,8 +2,10 @@ package com.codegym.controller;
 
 import com.codegym.model.Promotion;
 import com.codegym.service.impl.PromotionServiceImpl;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,16 +38,27 @@ public class PromotionController {
         return modelAndView;
     }
 
+//    @PostMapping("/save")
+//    public String saveCustomer(@ModelAttribute("customer") Promotion promotion,
+//                               RedirectAttributes redirect) {
+//        promotionService.save(promotion);
+//        redirect.addFlashAttribute("message", "Tạo mới thành công");
+//        return "redirect:/promotions";
+//    }
+
     @PostMapping("/save")
-    public String saveCustomer(@ModelAttribute("customer") Promotion promotion,
-                               RedirectAttributes redirect) {
+    public String savePromotion(@Valid @ModelAttribute Promotion promotion, BindingResult result, RedirectAttributes attributes) {
+        if (result.hasErrors()) {
+            return "/promotion/create";
+        }
         promotionService.save(promotion);
-        redirect.addFlashAttribute("message", "Tạo mới thành công");
+        attributes.addFlashAttribute("message", "Create new promotion successfully");
         return "redirect:/promotions";
     }
 
+
     @GetMapping("/delete/{id}")
-    public ModelAndView deletePromotion(@PathVariable Long id) {
+    public ModelAndView showDeleteConfirmation(@PathVariable Long id) {
         Optional<Promotion> promotionOptional = promotionService.findById(id);
 
         if (promotionOptional.isPresent()) {
@@ -62,6 +75,7 @@ public class PromotionController {
         attributes.addFlashAttribute("message", "Successfully deleted the Promotion");
         return "redirect:/promotions";
     }
+
 
     @GetMapping("/update/{id}")
     public ModelAndView updateForm(@PathVariable Long id) {

@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.FutureOrPresent;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,9 +26,11 @@ public class Promotion {
 
     private String title;
 
+    @FutureOrPresent(message = "Start Time cannot be in the past")
     @Column(nullable = false, name = "start_time")
     private LocalDateTime startTime;
 
+    @FutureOrPresent(message = "End Time cannot be in the past")
     @Column(nullable = false, name = "end_time")
     private LocalDateTime endTime;
 
