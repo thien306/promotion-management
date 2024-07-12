@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="/layout :: head">
+    <title></title>
+</head>
+<body>
+<h3>PROMOTION</h3>
+
+
+<div class="notify">
+    <div th:if="${message}">
+        <span th:text="${message}"></span>
+    </div>
+</div>
+
+<p>
+    <a th:href="@{/promotions/create}">
+        Add new customer
+    </a>
+</p>
+
+<table id = "promotions">
+    <thead>
+    <tr>
+        <th>STT</th>
+        <th>TITLE</th>
+        <th>START TIME</th>
+        <th>END TIME</th>
+        <th>PRICE</th>
+        <th>DETAIL</th>
+        <th>DELETE</th>
+        <th>VIEW</th>
+        <th>UPDATE</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="t, pStatus : ${promotion}">
+        <td th:text="${pStatus.count}"></td>
+        <td th:text="${t.getTitle()}"></td>
+        <td th:text="${t.getStartTime()}"></td>
+        <td th:text="${t.getEndTime()}"></td>
+        <td th:text="${t.getPrice()}"></td>
+        <td th:text="${t.getDetail()}"></td>
+        <td><a class="no-underline" th:href="@{/promotions/delete/{id}(id=${t.getId()})}"><i class="fa-solid fa-trash"></i></a></td>
+        <td><a class="no-underline" th:href="@{/promotions/view/{id}(id=${t.getId()})}"><i class="fa-sharp fa-solid fa-eye"></i></a></td>
+        <td><a class="no-underline" th:href="@{/promotions/update/{id}(id=${t.getId()})}"><i class="fa-solid fa-pen-to-square"></i></a></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
